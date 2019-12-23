@@ -1,0 +1,37 @@
+SACHIN JULURI
+
+package stringreverse;
+
+import java.util.*;
+
+public class reversestring {
+public static void main(String[] args) {
+	Scanner in=new Scanner(System.in);
+	
+	String str;
+	String ans="";
+	int count=0;
+	
+	System.out.println("Enter a string");
+	
+	str=in.next();
+	str=str.toLowerCase();
+	
+	for(int i=str.length()-1;i>=0;i--)
+	{
+		ans=ans+str.charAt(i);
+		if(str.charAt(i)=='a'||str.charAt(i)=='e'||str.charAt(i)=='i'||str.charAt(i)=='o'||str.charAt(i)=='u')
+		{
+			count++;
+		}
+	}
+	
+	System.out.println("Reverse string is");
+	System.out.println(ans);
+	
+	System.out.println("Number of vowels");
+	System.out.println(count);
+	
+	in.close();
+}
+}

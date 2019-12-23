@@ -1,0 +1,22 @@
+SACHIN JULURI
+
+1 b,c
+2 c
+3 d
+4 c
+5 d
+6 a
+7 b
+8 c
+9 d
+10 b
+11 a
+12 a,c,d
+13 d
+14 b
+15 b,c,d
+16 b
+17 a,b
+18 a,b
+19 d
+20 c
