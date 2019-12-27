@@ -1,0 +1,250 @@
+/*1*/
+select * from jobs
+where min_salary>10000
+
+/*2*/
+select first_name, hire_date 
+from employees
+where extract(year from hire_date) between 2002 and 2005
+
+/*3*/
+select first_name,hire_date
+from employees 
+where job_id='IT_PROG' or job_id='SA_REP'
+
+/*4*/
+select * 
+from employees
+where EXTRACT(YEAR FROM TO_DATE(hire_date, 'DD-MON-RR')) >=2008
+
+/*5*/
+select * 
+from employees
+where employee_id=150 or employee_id=160
+
+/*6*/
+select first_name, salary, commission_pct,hire_date
+from employees
+where salary<10000
+
+/*7*/
+select job_title,(max_salary-min_salary) 
+from jobs
+where max_salary between 10000 and 20000
+
+/*8*/
+select first_name,ceil(round(salary,-3))
+from employees
+
+/*9*/
+select * 
+from jobs
+order by job_title desc
+
+/*10*/
+select *
+from employees
+where first_name like 'S%' or last_name like 'S%'
+
+/*11*/
+select *
+from employees
+where extract(month from hire_date)=5
+
+/*12*/
+select *
+from employees
+where commission_pct is null and (salary between 5000 and 10000) and department_id=30
+
+/*13*/
+select first_name,(hire_date+30)
+from employees
+
+/*14*/
+select first_name,round(((sysdate -hire_date)/365)) "Experience in years"
+from employees
+
+/*15*/
+select first_name 
+from employees
+where extract(year from hire_date)='2001'
+
+/*16--- Makes first letter captial and rest are lower case*/
+select initcap(first_name),initcap(last_name)
+from employees
+
+/*17*/
+select regexp_replace(
+     job_title,
+     '(((\w+)\s){1}).*',  -- Change 4 to wanted number of words here!
+     '\1'
+   )
+from jobs;
+
+/*18*/
+select length(first_name) 
+from employees
+where instr(last_name,'b',4) is not null
+
+/*19*/
+select upper(first_name),lower(email)
+from employees
+where lower(first_name)=lower(email)
+
+/*20*/
+select * 
+from employees
+where extract(year from hire_date)=2019
+
+/*21*/
+select sysdate-to_date('01-JAN-2011','dd-mon-yyyy') "Days"
+from dual
+
+/*23*/
+select manager_id,count(employee_id)
+from employees
+group by manager_id
+
+/*24*/
+select e.employee_id,j.end_date
+from employees e
+join job_history j
+on e.employee_id=j.employee_id
+
+/*25*/
+select count(employee_id)
+from employees
+where extract(day from hire_date)>15
+group by extract(month from hire_date)
+
+/*26*/
+select country_id,count(city)
+from locations
+group by country_id
+
+/*27*/
+select avg(salary)
+from employees
+where commission_pct is not null
+group by department_id
+
+/*28*/
+select job_id,count(employee_id),sum(salary),(max(salary)-min(salary))
+from employees
+group by job_id
+
+/*29*/
+select job_id
+from employees
+having avg(salary)>10000
+group by job_id
+             
+/*30*/
+select extract(year from hire_date)
+from employees
+having count(employee_id)>10
+group by extract(year from hire_date)
+
+/*31*/
+select department_id 
+from employees
+having count(commission_pct)>5
+group by department_id
+
+/*32*/
+select employee_id 
+from job_history
+having count(employee_id)>1
+group by employee_id
+
+/*33*/
+select job_id
+from employees
+group by job_id
+having count(*)>3
+
+/*34*/
+select department_id,extract(year from hire_date) "Year",count(employee_id) "No. of employees"
+from employees
+group by department_id, extract(year from hire_date)
+
+
+/*35*/
+select department_id
+from employees
+having count(employee_id)>5
+group by manager_id,department_id
+
+/*40*/
+select department_name,count(employee_id)
+from departments,employees 
+where employees.department_id=departments.department_id
+group by department_name
+
+/*41--------?*/
+select job_id,employee_id,round((end_state-start_date))
+from jobs,job_history
+where department_id=30
+
+/*42*/
+select d.department_name,e.first_name
+from departments d join employees e 
+on d.manager_id=e.employee_id
+
+/*43*/
+select d.department_name,e.first_name,l.city
+from departments d join employees e
+on d.manager_id=e.employee_id
+join locations l
+on d.location_id=l.location_id
+
+/*44*/
+select c.country_name,l.city,d.department_name
+from countries c join locations l
+on c.country_id=l.country_id
+join departments d
+on d.location_id=l.location_id
+
+/*45*/
+select j.job_title, d.department_name,e.last_name,e.hire_date
+from departments d join employees e
+on d.department_id=e.department_id
+join jobs j
+on e.job_id=j.job_id
+where extract(year from e.hire_date) between 2000 and 2005
+
+/*46*/
+select j.job_title,avg(e.salary)
+from employees e join jobs j
+on j.job_id=e.job_id
+group by j.job_title
+
+/*47  Display job title, employee name, and the difference between maximum salary for the job and salary of the employee.*/
+select j.job_title,e.first_name,j.max_salary-e.salary
+from jobs j join employees e 
+on j.job_id=e.job_id
+
+/*48 Display last name, job title of employees who have commission percentage and belongs to department 30.*/
+select e.last_name,j.job_title 
+from jobs j join employees e
+on j.job_id=e.job_id
+where commission_pct is not null and department_id=30
+
+/*49 Display details of jobs that were done by any employee who is currently drawing more than 15000 of salary.*/
+select j.* 
+from jobs j join employees e
+on j.job_id=e.job_id
+where e.salary>15000
+
+/*50 Display department name, manager name, and salary of the manager for all managers whose experience is more than 5 years.*/
+select d.department_name,e.first_name,e.salary
+from departments d join employees e 
+on d.manager_id=e.manager_id
+where round((sysdate-hire_date)/365)>5
+
+/*51 Display employee name if the employee joined before his manager.*/
+select  e.first_name
+from employees e join employees m
+on e.employee_id=m.employee_id
+where e.manager_id=m.employee_id
+and (sysdate-e.hire_date)>(sysdate-m.hire_date)
